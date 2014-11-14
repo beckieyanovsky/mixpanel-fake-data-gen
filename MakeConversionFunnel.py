@@ -8,9 +8,9 @@
 # EVENT_NAME_2
 # EVENT_NAME_3
 # INITIAL_USERS
+"""
 
 #import libraries
-"""
 import beckiesmixpanel
 import credentials
 import random
@@ -34,23 +34,23 @@ INITIAL_USERS = 100
 
 #This method takes in a distinct_id, a dictionary of {"event_name", {"property_name":property value}}, 
 # a list of events, and a list of conversion floats and makes a funnel 
-def move_user_through_conversion_funnel(distinct_id, events_dict, events_list, conversions):
+def move_user_through_conversion_funnel(self, distinct_id, events_dict, events_list, conversions):
 	#check if number of conversion percentages is one less than number of events
-	while (len(conversions)+1) != len(events):
+	while (len(conversions)+1) != len(events_list):
 		#if not enough conversion percentages given, append 0.0 to the list until there are enough
-		if (len(conversions) < len(events)):
+		if (len(conversions) < len(events_list)):
 			conversions.append(0.0)
 		#if too many conversion percentages given, remove last value until there are right amount
-		elif ((len(conversions) >= (len(events)))):
+		elif ((len(conversions) >= (len(events_list)))):
 			conversions.pop()
 	#for every user, tracks the first event in the funnel
-	mp.track(distinct_id, events_list[0], events_dict.get(events_list[0]))
+	self.track(distinct_id, events_list[0], events_dict.get(events_list[0]))
 	iterator = 0
 	while iterator <= (len(conversions)-1):
 		r = random.random()
 		print r
 		if r < conversions[iterator]:
-			mp.track(distinct_id, events_list[(iterator+1)], events_dict.get(events_list[(iterator+1)]))
+			self.track(distinct_id, events_list[(iterator+1)], events_dict.get(events_list[(iterator+1)]))
 			print events_list[(iterator+1)]
 		iterator += 1
 
@@ -75,7 +75,7 @@ if __name__ == '__main__':
 		for event in events:
 			event_prop_dict[event]=super_properties
 		#move a user through the funnel based on conversion rates provided above
-		move_user_through_conversion_funnel(distinct_id, event_prop_dict, events, conversions)
+		move_user_through_conversion_funnel(mp, distinct_id, event_prop_dict, events, conversions)
 		distinct_id += 1
 
 
