@@ -18,7 +18,7 @@ import random
 
 # Please enter a decimal for the percent conversion you'd like for each step. For example, .35 would indicate a 35% conversion rate
 PERCENT_STEP1_STEP2 = .85
-PERCENT_STEP2_STEP3 = .6
+PERCENT_STEP2_STEP3 = .2
 #OVERALL_CONVERSION = (PERCENT_STEP1_STEP2 * PERCENT_STEP2_STEP3)
 
 #Please enter the names for the three events relevant to the funnel:
@@ -27,17 +27,13 @@ EVENT_NAME_2 = "Signup Page Loaded"
 EVENT_NAME_3 = "Signup Complete"
 
 #Please enter the number of initial users you would like to be part of this funnel. 
-INITIAL_USERS = 10
+INITIAL_USERS = 100
 
 
-#This method randomly assigns a "Male" or "Female" value with assigned frequency
-def assign_gender():
-	gender = random.choice(['Female', 'Male'])
-	print gender
-	return gender
 
-#This method takes in a dictionary of {"event_name", {"property_name":property value}}, 
-# and a list of conversion floats and makes a funnel 
+
+#This method takes in a distinct_id, a dictionary of {"event_name", {"property_name":property value}}, 
+# a list of events, and a list of conversion floats and makes a funnel 
 def move_user_through_conversion_funnel(distinct_id, events_dict, events_list, conversions):
 	#check if number of conversion percentages is one less than number of events
 	while (len(conversions)+1) != len(events):
@@ -52,11 +48,11 @@ def move_user_through_conversion_funnel(distinct_id, events_dict, events_list, c
 	iterator = 0
 	while iterator <= (len(conversions)-1):
 		r = random.random()
+		print r
 		if r < conversions[iterator]:
 			mp.track(distinct_id, events_list[(iterator+1)], events_dict.get(events_list[(iterator+1)]))
 			print events_list[(iterator+1)]
-			iterator += 1
-
+		iterator += 1
 
 
 if __name__ == '__main__':
@@ -71,7 +67,7 @@ if __name__ == '__main__':
 	conversions = [PERCENT_STEP1_STEP2, PERCENT_STEP2_STEP3]
 	while distinct_id <= INITIAL_USERS:
 		#make dictionary of super properties
-		gender = assign_gender()
+		gender = mp.assign_gender()
 		gender_dict = {'Gender': gender}
 		super_properties.update(gender_dict)
 		#make dictionary of {events:{their properties}}
