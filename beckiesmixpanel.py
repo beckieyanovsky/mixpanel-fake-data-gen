@@ -2,13 +2,13 @@
 # -track
 
 import base64
+import credentials
 import json
+import random
 import time
 from urllib2 import urlopen
 import urllib2
 import urllib
-import credentials
-import random
 
 ENDPOINT = 'https://api.mixpanel.com/track'
 
