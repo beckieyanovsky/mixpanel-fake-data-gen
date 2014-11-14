@@ -8,6 +8,7 @@ from urllib2 import urlopen
 import urllib2
 import urllib
 import credentials
+import random
 
 ENDPOINT = 'https://api.mixpanel.com/track'
 
@@ -17,6 +18,7 @@ class Mixpanel(object):
 		self.api_key = api_key
 		self.api_secret = api_secret
 		self.token = token
+
 
 	def track(self, distinct_id, event_name, added_properties={}):
 		"""
@@ -45,8 +47,8 @@ class Mixpanel(object):
 
 
 		encoded_data = urllib.urlencode(data)
-		print encoded_data
+		#print encoded_data
 		request = urllib2.Request(ENDPOINT, encoded_data)
 
 		response = urllib2.urlopen(request).read()
-		print response
+		#print response

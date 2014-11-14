@@ -17,7 +17,7 @@ import credentials
 # Please enter a decimal for the percent conversion you'd like for each step. For example, .35 would indicate a 35% conversion rate
 PERCENT_STEP1_STEP2 = .85
 PERCENT_STEP2_STEP3 = .6
-OVERALL_CONVERSION = (PERCENT_STEP1_STEP2 * PERCENT_STEP2_STEP3)
+#OVERALL_CONVERSION = (PERCENT_STEP1_STEP2 * PERCENT_STEP2_STEP3)
 
 #Please enter the names for the three events relevant to the funnel:
 EVENT_NAME_1 = "Landing Page Loaded"
@@ -28,6 +28,16 @@ EVENT_NAME_3 = "Signup Complete"
 INITIAL_USERS = 100
 
 
+#This method randomly assigns a "Male" or "Female" value with assigned frequency
+def assign_gender():
+	frequency = .5
+	r = random.random()
+	if r < frequency:
+		return 'Male'
+	else:
+		return 'Female'
+	#return gender
+
 
 if __name__ == '__main__':
 	mp = beckiesmixpanel.Mixpanel(
@@ -36,14 +46,19 @@ if __name__ == '__main__':
 		token = credentials.token
     	)
 	distinct_id = 1
-	while distinct_id < INITIAL_USERS:
-		mp.track(distinct_id, EVENT_NAME_1)
+	properties = {}
+	while distinct_id <= INITIAL_USERS:
+		gender = assign_gender()
+		gender_dict = {'Gender': gender}
+		#print mp.assignGender
+		properties.update(gender_dict)
+		mp.track(distinct_id, EVENT_NAME_1, properties)
 		randomFirstConversion = random.random()
 		if randomFirstConversion < PERCENT_STEP1_STEP2:
-			mp.track(distinct_id, EVENT_NAME_2)
+			mp.track(distinct_id, EVENT_NAME_2, properties)
 			randomSecondConversion = random.random()
 			if randomSecondConversion < PERCENT_STEP2_STEP3:
-				mp.track(distinct_id, EVENT_NAME_3)
+				mp.track(distinct_id, EVENT_NAME_3, properties)
 		distinct_id += 1
 
 
