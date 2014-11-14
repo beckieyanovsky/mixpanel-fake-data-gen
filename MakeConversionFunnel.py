@@ -30,12 +30,16 @@ INITIAL_USERS = 100
 
 #This method randomly assigns a "Male" or "Female" value with assigned frequency
 def assign_gender():
-	frequency = .5
-	r = random.random()
-	if r < frequency:
-		return 'Male'
-	else:
-		return 'Female'
+	gender = random.choice(['Female', 'Male'])
+	print gender
+	return gender
+
+	# frequency = .5
+	# r = random.random()
+	# if r < frequency:
+	# 	return 'Male'
+	# else:
+	# 	return 'Female'
 	#return gender
 
 
@@ -50,7 +54,6 @@ if __name__ == '__main__':
 	while distinct_id <= INITIAL_USERS:
 		gender = assign_gender()
 		gender_dict = {'Gender': gender}
-		#print mp.assignGender
 		properties.update(gender_dict)
 		mp.track(distinct_id, EVENT_NAME_1, properties)
 		randomFirstConversion = random.random()
