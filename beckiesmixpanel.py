@@ -19,6 +19,15 @@ class Mixpanel(object):
 		self.api_secret = api_secret
 		self.token = token
 
+	#This method randomly assigns a gender value 
+	def assign_gender(self):
+		gender = random.choice(['Female', 'Male', 'Unknown'])
+		return gender
+
+	#This method randomly assigns an OS value 
+	def assign_os(self):
+		os = random.choice(['Linux', 'Unix', 'Windows', 'OSX', 'iOS','Android'])
+		return os
 
 	def track(self, distinct_id, event_name, added_properties={}):
 		"""
@@ -26,7 +35,6 @@ class Mixpanel(object):
 		and it will track that event in the mixpanel project with same credentials as Mixpanel object
 		that called it.
 		"""
-
 		properties = {
 			'distinct_id' : distinct_id,
 			'time' : int(time.time()),
